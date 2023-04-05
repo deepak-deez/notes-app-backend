@@ -1,41 +1,58 @@
 // const mongoose = require('mongoose');
 import mongoose from "mongoose";
-import http from "http";
-
-let hostname = "127.0.0.1";
+// import http from "http";
+import express from 'express';
+import cors from 'cors';
+const app = express();
 let port = 8085;
+let hostname = "127.0.0.1";
+app.use(express.json());
+app.use(cors());
+
+
+app.listen(port, () => console.log('Example app listening on port 3000!'));
+
+
 
 async function requestReceived(request) {
   // console.log(request.url);
   if (request.url == "/") {
-    const myData = await read({});
+    const myData = read({});
     // console.log("myData" , myData);
     // console.log(read({}));
-    // return myData;
-  } else {
+    return await myData;
+  }
+  else if (request.url == "/create") {
+    request.on('data', )
+    // console.log(request.body);
+    return "yes";
+  }
+  else {
     console.log("not data");
   }
 }
 
-const server = http.createServer(async (request, response) => {
-  response.setHeader("Access-Control-Allow-Origin", "*");
-  response.setHeader("Access-Control-Allow-Headers", "*");
-  response.writeHead(200, { "Content-Type": "application/json" });
-  try {
-    const result = await requestReceived(request);
-    console.log("result", result);
-    response.end("result");
-  } catch (err) {
-    response.end({
-      data: "Not Found",
-      error: err,
-    });
-  }
+app.get('/', async(req, res) => {
+  const myData = await read({});
+  res.send(myData)
 });
 
-server.listen(port, hostname, () => {
-  console.log("server is listening at", port);
+app.post('/create', async(req, res) => {
+ console.log(req.body);
+ await create(req.body);
+ res.send({"body" : "Data sent!"})
 });
+
+app.delete('/delete', async(req, res) => {
+  // await deleteData(req.body);
+  res.send("DELETE Request Called" )
+})
+
+app.put('/update', async(req, res) => {
+  // console.log(req.body);
+  await update(req.body[0], req.body[1])
+  res.send('Got a PUT request at /user')
+})
 
 main()
   .then(() => {
@@ -80,19 +97,22 @@ const mySchema = mongoose.model("mySchema", schema);
 
 async function create(data) {
   await mySchema.create(data);
-  mongoose.connection.close().then(() => {
-    console.log("connection closed");
-  });
+  // mongoose.connection.close().then(() => {
+  //   console.log("connection closed");
+  // });
 }
 
-// create(weatherData);
+// create({notes:"I am a developer"});
 
 async function deleteData(data) {
   await mySchema.deleteOne(data);
-  mongoose.connection.close().then(() => {
-    console.log("connection closed");
-  });
+  // mongoose.connection.close().then(() => {
+  //   console.log("connection closed");
+  // });
 }
+
+
+
 async function read(data) {
   //  let db = await mySchema.find(data).then((data)=>{
   //     console.log("data found");
@@ -113,9 +133,10 @@ async function read(data) {
 }
 async function update(oldData, newData) {
   await mySchema.updateOne(oldData, newData);
-  mongoose.connection.close().then(() => {
-    console.log("connection closed");
-  });
+  // mongoose.connection.close().then(() => {
+  //   console.log("connection closed");
+  // });
 }
 
+// update({"notes": "I am a boy"} , {"notes": "I did it"})
 // mySchema.updateOne()
