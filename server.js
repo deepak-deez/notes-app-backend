@@ -1,7 +1,7 @@
 // const mongoose = require('mongoose');
 import mongoose from "mongoose";
 // import http from "http";
-import express from 'express';
+import express, { response } from 'express';
 import cors from 'cors';
 const app = express();
 let port = 8085;
@@ -34,24 +34,25 @@ async function requestReceived(request) {
 
 app.get('/', async(req, res) => {
   const myData = await read({});
-  res.send(myData)
+  res.send([{data :myData},{
+    message: "hello"
+  }, {status: 200}])
 });
 
 app.post('/create', async(req, res) => {
  console.log(req.body);
  await create(req.body);
- res.send({"body" : "Data sent!"})
+ res.send([{message : "Data sent!"},{status:200}])
 });
 
 app.delete('/delete', async(req, res) => {
-  // await deleteData(req.body);
-  res.send("DELETE Request Called" )
+  await deleteData(req.body)
+  res.send([{message: "DELETE Request Called"},{status:200}] )
 })
 
 app.put('/update', async(req, res) => {
-  // console.log(req.body);
   await update(req.body[0], req.body[1])
-  res.send('Got a PUT request at /user')
+  res.send([{message: 'Got a PUT request at /user'},{status:200}])
 })
 
 main()
@@ -85,16 +86,6 @@ const mySchema = mongoose.model("mySchema", schema);
 //   const data = new mySchema({ name: 'deepak' });
 //   console.log(data.name);
 
-// Creating document using create method
-// mySchema.collection.insert([{
-//     name: 'Customer21',
-//     orderCount: 10
-// },
-// { name: 'Customer31', orderCount: 20 }])
-//    .then(result => {
-//     console.log(result)
-// })
-
 async function create(data) {
   await mySchema.create(data);
   // mongoose.connection.close().then(() => {
@@ -105,7 +96,9 @@ async function create(data) {
 // create({notes:"I am a developer"});
 
 async function deleteData(data) {
-  await mySchema.deleteOne(data);
+
+
+  await mySchema.findOneAndDelete(data);
   // mongoose.connection.close().then(() => {
   //   console.log("connection closed");
   // });
