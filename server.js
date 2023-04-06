@@ -15,7 +15,7 @@ app.listen(port, () => console.log('Example app listening on port 3000!'));
 app.get('/', async (req, res) => {
   const myData = await read({});
   res.send([{ data: myData }, {
-    message: "hello"
+    message: "Notes found!"
   }, { status: 200 }])
 });
 
@@ -27,12 +27,12 @@ app.post('/create', async (req, res) => {
 
 app.delete('/delete', async (req, res) => {
   await deleteData(req.body)
-  res.send([{ message: "Note deleted" }, { status: 200 }])
+  res.send([{ message: "Note deleted!" }, { status: 200 }])
 })
 
 app.put('/update', async (req, res) => {
   await update({notes : req.body[0]}, {notes : req.body[1]})
-  res.send([{ message: 'Note modified' }, { status: 200 }])
+  res.send([{ message: 'Note modified!' }, { status: 200 }])
 })
  
 //routes
