@@ -22,20 +22,21 @@ app.get('/', async (req, res) => {
 app.post('/create', async (req, res) => {
   console.log(req.body);
   await create(req.body);
-  res.send([{ message: "Data sent!" }, { status: 200 }])
+  res.send([{ message: "Note added!" }, { status: 200 }])
 });
 
 app.delete('/delete', async (req, res) => {
   await deleteData(req.body)
-  res.send([{ message: "DELETE Request Called" }, { status: 200 }])
+  res.send([{ message: "Note deleted" }, { status: 200 }])
 })
 
 app.put('/update', async (req, res) => {
   await update({notes : req.body[0]}, {notes : req.body[1]})
-  res.send([{ message: 'Note saved' }, { status: 200 }])
+  res.send([{ message: 'Note modified' }, { status: 200 }])
 })
  
 //routes
+
 
 //mongoose connection
 
