@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 // import  mySchema  from "./schema.js";
 import express, { response } from 'express';
+import { userData } from "./config.js";
+// log
 import cors from 'cors';
 const app = express();
 let port = 8085;
@@ -48,8 +50,8 @@ main()
 
 async function main() {
   await mongoose.connect(
-    "mongodb+srv://deepak:mongo@cluster1.hj2ru6p.mongodb.net/test"
-  );
+    `mongodb+srv://${userData.userName}:${userData.password}@cluster1.hj2ru6p.mongodb.net/${userData.dbName}`
+ );
 }
 
 //mongoose connection
