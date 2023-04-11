@@ -4,24 +4,25 @@ import { create, deleteData, read, update } from "./functions.js";
 
 const nodeRouter = Router();
 
-nodeRouter.get("/", async (req, res , next) => {
-  try{
+nodeRouter.get("/", async (req, res, next) => {
+  try {
     const myData = await read({});
-  res.send(
-    JSON.stringify({ data: myData ,
-   message: "Notes found!" ,
-    status: 200 })
-  );
+    res.send(
+      JSON.stringify({
+        data: myData,
+        message: "Notes found!",
+        status: 200
+      })
+    );
   }
-  catch(error){
+  catch (error) {
     next(error)
   }
 });
 
 nodeRouter.post("/create", async (req, res, next) => {
-  // console.log(req.body);
   await create(req.body);
-  try{
+  try {
     res.send(
       JSON.stringify({
         message: "Note added!",
@@ -30,40 +31,40 @@ nodeRouter.post("/create", async (req, res, next) => {
       })
     );
   }
-  catch(error){
+  catch (error) {
     next(error)
   }
 });
 
 nodeRouter.delete("/delete", async (req, res, next) => {
   await deleteData(req.body);
-  try{
+  try {
     res.send(
       JSON.stringify({
         message: "Note deleted!",
         status: 200,
         data: null,
       })
-      
-      );
+
+    );
   }
-  catch(error){
+  catch (error) {
     next(error)
   }
 });
 
 nodeRouter.put("/update", async (req, res, next) => {
   await update({ notes: req.body[0] }, { notes: req.body[1] });
-  try{
+  try {
     res.send(
       JSON.stringify({
         message: "Note updated!",
         status: 200,
         data: null,
       })
-      );
+    );
   }
-  catch(err){
+  catch (err) {
     next(error)
   }
 });
