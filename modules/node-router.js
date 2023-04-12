@@ -1,9 +1,7 @@
 import { Router } from "express";
-// import { userData } from "../config.js";
 import { create, deleteData, read, update } from "./functions.js";
 
 const nodeRouter = Router();
-
 nodeRouter.get("/", async (req, res, next) => {
   try {
     const myData = await read({});
