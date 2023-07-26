@@ -5,12 +5,15 @@ const nodeRouter = Router();
 nodeRouter.get("/", async (req, res, next) => {
   try {
     const myData = await read({});
+    console.log(JSON.parse(myData));
     res.send(
-      JSON.stringify({
-        data: myData,
+      JSON.stringify(
+        {
+        data: JSON.parse(myData),
         message: "Notes found!",
         status: 200
-      })
+      }
+      )
     );
   }
   catch (error) {
@@ -19,6 +22,7 @@ nodeRouter.get("/", async (req, res, next) => {
 });
 
 nodeRouter.post("/create", async (req, res, next) => {
+  console.log((req.body));
   await create(req.body);
   try {
     res.send(
@@ -52,7 +56,9 @@ nodeRouter.delete("/delete", async (req, res, next) => {
 });
 
 nodeRouter.put("/update", async (req, res, next) => {
-  await update({ notes: req.body[0] }, { notes: req.body[1] });
+  console.log(req.body);
+  // await update({ notes: req.body[0] }, { notes: req.body[1] });
+  await update(req.body[0],req.body[1])
   try {
     res.send(
       JSON.stringify({
